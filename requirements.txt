@@ -1,5 +1,6 @@
 torch>=2.0.0
 transformers==4.29.2
+tokenizers>=0.13.3 --only-binary tokenizers
 trl==0.4.7
 datasets>=2.14.0
 peft>=0.3.0
