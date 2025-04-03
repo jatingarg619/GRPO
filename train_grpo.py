@@ -145,19 +145,11 @@ def main():
         max_completion_length=32,       # Reduced for speed
         num_generations=2,              # Must evenly divide into batch size
         fp16=True,                      # Use half precision
-        max_new_tokens=32,              # Limit generation length for speed
-        do_sample=True,
-        temperature=0.7,
-        top_p=0.9,
-        use_cache=True,                 # Important for speed
-        gradient_checkpointing=False,   # Disable for speed (uses more memory)
         report_to="none",
         log_level="info",
         save_total_limit=1,             # Keep only the last checkpoint
         lr_scheduler_type="linear",     # Simpler scheduler
-        warmup_steps=50,                # Reduced warmup
-        dataloader_num_workers=4,       # Use multiple workers for data loading
-        dataloader_pin_memory=True      # Pin memory for faster data transfer to GPU
+        warmup_steps=50                 # Reduced warmup
     )
 
     print("\nInitializing trainer...")
