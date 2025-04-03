@@ -129,14 +129,15 @@ def main():
     training_args = GRPOConfig(
         output_dir="phi2-grpo-output",
         num_train_epochs=1,             # One full epoch
-        per_device_train_batch_size=1,  # Reduced batch size for memory
-        gradient_accumulation_steps=8,  # Increased for full dataset
+        per_device_train_batch_size=2,  # Must be evenly divisible by num_generations
+        gradient_accumulation_steps=4,  # Increased for full dataset
         learning_rate=1e-5,
         logging_steps=100,              # Increased for full dataset
         save_steps=1000,                # Save checkpoints during training
         max_steps=-1,                   # Train on full dataset
         max_prompt_length=128,
         max_completion_length=64,
+        num_generations=2,              # Must evenly divide into batch size
         fp16=True,
         gradient_checkpointing=True,
         report_to="none",
