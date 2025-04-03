@@ -119,7 +119,7 @@ def main():
     print("Loading dataset...")
     dataset = load_dataset("trl-lib/tldr", split="train")
     # Use a much smaller subset for reasonable training time
-    MAX_SAMPLES = 1000  # Adjust this based on your time constraints
+    MAX_SAMPLES = 5000  # Adjusted for more training data
     dataset = dataset.select(range(min(MAX_SAMPLES, len(dataset))))
     print(f"Using {len(dataset)} examples out of {load_dataset('trl-lib/tldr', split='train').num_rows} total")
     print(f"Example: {dataset[0]}")
