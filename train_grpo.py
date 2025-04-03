@@ -145,13 +145,11 @@ def main():
         max_completion_length=32,       # Reduced for speed
         num_generations=2,              # Must evenly divide into batch size
         fp16=True,                      # Use half precision
-        generation_config={
-            "max_new_tokens": 32,       # Limit generation length for speed
-            "do_sample": True,
-            "temperature": 0.7,
-            "top_p": 0.9,
-            "use_cache": True           # Important for speed
-        },
+        max_new_tokens=32,              # Limit generation length for speed
+        do_sample=True,
+        temperature=0.7,
+        top_p=0.9,
+        use_cache=True,                 # Important for speed
         gradient_checkpointing=False,   # Disable for speed (uses more memory)
         report_to="none",
         log_level="info",
