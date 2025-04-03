@@ -114,8 +114,7 @@ def main():
 
     print("Loading dataset...")
     dataset = load_dataset("trl-lib/tldr", split="train")
-    # Using a smaller portion of the dataset to fit in GPU memory
-    dataset = dataset.select(range(min(5000, len(dataset))))
+    # Using full dataset
     print(f"Dataset size: {len(dataset)} examples")
     print(f"Example: {dataset[0]}")
 
@@ -125,22 +124,26 @@ def main():
     # Create and save tokenizer with padding token
     model, tokenizer = prepare_tokenizer_and_model()
 
-    # Training configuration with lower memory usage
+    # Training configuration for full dataset
     print("\nSetting up training configuration...")
     training_args = GRPOConfig(
         output_dir="phi2-grpo-output",
-        num_train_epochs=1,  # Single epoch for testing
-        per_device_train_batch_size=2,
-        gradient_accumulation_steps=4,
-        learning_rate=2e-5,
-        logging_steps=5,
-        num_generations=2,
+        num_train_epochs=1,             # One full epoch
+        per_device_train_batch_size=1,  # Reduced batch size for memory
+        gradient_accumulation_steps=8,  # Increased for full dataset
+        learning_rate=1e-5,
+        logging_steps=100,              # Increased for full dataset
+        save_steps=1000,                # Save checkpoints during training
+        max_steps=-1,                   # Train on full dataset
         max_prompt_length=128,
         max_completion_length=64,
         fp16=True,
         gradient_checkpointing=True,
         report_to="none",
-        log_level="info"
+        log_level="info",
+        save_total_limit=3,             # Keep only the last 3 checkpoints
+        lr_scheduler_type="cosine",     # Cosine scheduler for better convergence
+        warmup_steps=500                # Warm up learning rate
     )
 
     print("\nInitializing trainer...")
@@ -161,7 +164,7 @@ def main():
     print("\nGPU state after trainer initialization:")
     print_gpu_utilization()
     
-    print("\nStarting training...")
+    print("\nStarting training on full dataset...")
     print("Time since start:", time.time() - start_time, "seconds")
     try:
         # Try monkey-patching the token before training starts
@@ -174,6 +177,9 @@ def main():
             trainer._tokenizer = tokenizer
             print("Applied prepared tokenizer to trainer's internal tokenizer")
             
+        print(f"\nTraining will run for 1 epoch on {len(dataset)} examples")
+        print("This may take several hours. Progress will be logged every 100 steps.")
+        
         trainer.train()
         trainer.save_model("phi2-grpo-final")
         # Save tokenizer with final model
