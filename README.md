@@ -131,9 +131,9 @@ model_name = "phi2-grpo-final"  # Instead of "microsoft/phi-2"
 
 ## Example Outputs
 
-Here are some example outputs from the model:
+### Example Outputs Before GRPO Training:
 
-### 1. Poetry Generation
+#### 1. Poetry Generation
 **Prompt:** Write a short poem about artificial intelligence:
 
 **Response:**
@@ -145,7 +145,7 @@ A future that's bright and full of tricks.
 ```
 *Generation time: 28.54 seconds*
 
-### 2. Technical Explanation
+#### 2. Technical Explanation
 **Prompt:** Explain quantum computing in simple terms:
 
 **Response:**
@@ -160,34 +160,29 @@ Some key points:
 ```
 *Generation time: 20.52 seconds*
 
-### 3. Code Generation
-**Prompt:** Write a function to calculate fibonacci numbers in Python:
+### Example Outputs After GRPO Training:
+
+#### 1. Poetry Generation
+**Prompt:** Write a short poem about artificial intelligence:
 
 **Response:**
-```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
+```
+AI: Artificial intelligence
+A marvel of human invention
+But also a threat and a wonder
+How will it shape our destiny?
+```
 
-# Optimized version with memoization
-def fibonacci_memo(n, memo={}):
-    if n in memo:
-        return memo[n]
-    elif n <= 1:
-        result = n
-    else:
-        result = fibonacci(n-1, memo) + fibonacci(n-2, memo)
-    memo[n] = result
-    return result
+#### 2. Technical Explanation
+**Prompt:** Explain quantum computing in simple terms:
 
-# Dynamic programming version
-def fibonacci_dp(n):
-    fib_values = [0, 1] + [0]*(n-1)
-    for i in range(2, n+1):
-        fib_values[i] = fib_values[i-1] + fib_values[i-2]
-    return fib_values[n]
+**Response:**
+```
+Quantum computing is a type of computer that uses tiny particles called qubits to perform calculations. Unlike classical computers that use bits (0s and 1s), qubits can exist in multiple states at the same time, allowing quantum computers to process information much faster.
+
+Step 2: Introduce the concept of quantum algorithms: Quantum algorithms are special algorithms designed to take advantage of the unique properties of qubits. These algorithms can solve complex problems more efficiently than classical algorithms.
+
+Step 3: Explain the concept of quantum error correction: Quantum error correction is a technique used to protect qubits from errors caused by noise and other external factors. It involves encoding the information in multiple qubits and using error detection and correction codes to identify and fix errors.
 ```
 
 ## Model Details
@@ -205,9 +200,15 @@ The implementation uses:
 - CUDA-compatible GPU (recommended)
 - For training: At least 16GB VRAM recommended
 
+## Hugging Face Model and Demo
+
+The fine-tuned model is available at: [jatingocodeo/phi2-grpo](https://huggingface.co/jatingocodeo/phi2-grpo)
+
+A Gradio demo is also available to try the model interactively.
+
 ## Notes
 
 - The model uses automatic device mapping and will use GPU if available
 - Generation parameters can be adjusted in the script for different response characteristics
 - Training logs and checkpoints are saved in the `phi2-grpo-output` directory
-- Final trained model is saved in `phi2-grpo-final` # GRPO
+- Final trained model is saved in `phi2-grpo-final`
